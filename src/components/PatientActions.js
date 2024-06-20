@@ -16,40 +16,59 @@ import {
   Button,
   CircularProgress,
   Typography,
+  TextField,
 } from "@mui/material";
+import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
-const PatientActions = () => {
-  const [rows, setRows] = useState([{ id: 1, action: "", price: "" }]);
+const PatientActions = ({ patient }) => {
+  const [rows, setRows] = useState([]);
   const [procedures, setProcedures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("https://localhost:7264/api/Patient/get-all-mediacl-procedures")
-      .then((response) => {
-        setProcedures(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
-  }, []);
+    if (patient) {
+      axios
+        .get("https://localhost:7264/api/Patient/get-all-mediacl-procedures")
+        .then((response) => {
+          setProcedures(response.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setLoading(false);
+        });
+    }
+  }, [patient]);
 
-  const handleChange = (index) => (event) => {
-    const selectedProcedure = procedures.find(
-      (procedure) => procedure.medicalProcedureId === event.target.value
-    );
+  useEffect(() => {
+    if (patient) {
+      setRows([{ id: 1, action: "", price: "", procedureDate: null }]); // Reset rows when patient changes
+    } else {
+      setRows([]); // Clear rows if no patient is selected
+    }
+  }, [patient]);
 
+  const handleChange = (index, field) => (event) => {
     const newRows = [...rows];
-    newRows[index].action = selectedProcedure.medicalProcedureId;
-    newRows[index].price = selectedProcedure.price;
+    if (field === "action") {
+      const selectedProcedure = procedures.find(
+        (procedure) => procedure.medicalProcedureId === event.target.value
+      );
+      newRows[index].action = selectedProcedure.medicalProcedureId;
+      newRows[index].price = selectedProcedure.price;
+    } else if (field === "procedureDate") {
+      newRows[index].procedureDate = event;
+    }
     setRows(newRows);
   };
 
   const addNewRow = () => {
-    setRows([...rows, { id: rows.length + 1, action: "", price: "" }]);
+    setRows([
+      ...rows,
+      { id: rows.length + 1, action: "", price: "", procedureDate: null },
+    ]);
   };
 
   if (loading) {
@@ -79,11 +98,14 @@ const PatientActions = () => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell sx={{ padding: "4px", width: "50%" }}>
+                <TableCell sx={{ padding: "4px", width: "40%" }}>
                   Medical Procedure
                 </TableCell>
-                <TableCell sx={{ padding: "4px", width: "50%" }}>
+                <TableCell sx={{ padding: "4px", width: "20%" }}>
                   Price
+                </TableCell>
+                <TableCell sx={{ padding: "4px", width: "40%" }}>
+                  Procedure Date
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -103,7 +125,7 @@ const PatientActions = () => {
                         id={`action-select-${row.id}`}
                         value={row.action}
                         label="Procedure"
-                        onChange={handleChange(index)}
+                        onChange={handleChange(index, "action")}
                         sx={{
                           fontSize: "0.875rem",
                           padding: "0px",
@@ -135,6 +157,19 @@ const PatientActions = () => {
                     </FormControl>
                   </TableCell>
                   <TableCell sx={{ padding: "4px" }}>{row.price}</TableCell>
+                  <TableCell sx={{ padding: "4px" }}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => (
+                          <TextField {...props} sx={{ fontSize: "0.875rem" }} />
+                        )}
+                        label="Procedure Date"
+                        value={row.procedureDate}
+                        onChange={handleChange(index, "procedureDate")}
+                        inputFormat="yyyy/MM/dd hh:mm a"
+                      />
+                    </LocalizationProvider>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -17,9 +17,11 @@ const PatientPage = () => {
           <Grid item xs={12}>
             <PatientDetails patient={selectedPatient} />
           </Grid>
-          <Grid item xs={12}>
-            <PatientActions />
-          </Grid>
+          {selectedPatient && (
+            <Grid item xs={12}>
+              <PatientActions patient={selectedPatient} />
+            </Grid>
+          )}
         </Grid>
       </Box>
     </Box>
