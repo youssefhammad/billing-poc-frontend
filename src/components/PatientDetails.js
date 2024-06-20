@@ -39,7 +39,12 @@ const PatientDetails = ({ patient }) => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography variant="body1">
-            <strong>Birth Date:</strong> {patient.birthDate}
+            <strong>Co-Insurance:</strong> {patient.coInsurance}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body1">
+            <strong>VIP:</strong> {patient.isVIP ? "Yes" : "No"}
           </Typography>
         </Grid>
       </Grid>
