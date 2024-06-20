@@ -20,12 +20,14 @@ import {
 } from "@mui/material";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import InvoiceDetails from "./InvoiceDetails";
 
 const PatientActions = ({ patient }) => {
   const [rows, setRows] = useState([]);
   const [procedures, setProcedures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [invoice, setInvoice] = useState(null);
 
   useEffect(() => {
     if (patient) {
@@ -86,6 +88,7 @@ const PatientActions = ({ patient }) => {
       .post("https://localhost:7264/api/Patient/add-invoice", invoiceData)
       .then((response) => {
         // Handle successful response
+        setInvoice(response.data);
         console.log("Invoice created successfully:", response.data);
       })
       .catch((error) => {
@@ -245,11 +248,17 @@ const PatientActions = ({ patient }) => {
           <Button variant="contained" color="primary" onClick={addNewRow}>
             Add New
           </Button>
-          <Button variant="contained" color="secondary" onClick={createInvoice}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={createInvoice}
+            disabled={invoice !== null} // Disable the button if invoice is created
+          >
             Create Invoice
           </Button>
         </Box>
       </Box>
+      {invoice && <InvoiceDetails invoice={invoice} />}
     </Paper>
   );
 };
