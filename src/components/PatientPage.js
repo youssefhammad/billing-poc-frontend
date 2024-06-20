@@ -12,8 +12,8 @@ const PatientPage = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <PatientList onSelectPatient={setSelectedPatient} />
-      <Box sx={{ flex: 1, padding: 2 }}>
-        <Grid container spacing={2}>
+      <Box sx={{ flex: 1, padding: 0 }}>
+        <Grid container spacing={0}>
           <Grid item xs={12}>
             <PatientDetails patient={selectedPatient} />
           </Grid>

@@ -71,6 +71,29 @@ const PatientActions = ({ patient }) => {
     ]);
   };
 
+  const createInvoice = () => {
+    const invoiceData = {
+      patientId: patient.patientId,
+      patientMedicalProcedures: rows.map((row) => ({
+        medicalProcedureId: row.action,
+        procedureDate: row.procedureDate
+          ? row.procedureDate.toISOString()
+          : null,
+      })),
+    };
+
+    axios
+      .post("https://localhost:7264/api/Patient/add-invoice", invoiceData)
+      .then((response) => {
+        // Handle successful response
+        console.log("Invoice created successfully:", response.data);
+      })
+      .catch((error) => {
+        // Handle error response
+        console.error("Failed to create invoice:", error);
+      });
+  };
+
   if (loading) {
     return (
       <Box sx={{ padding: 2, display: "flex", justifyContent: "center" }}>
@@ -175,9 +198,18 @@ const PatientActions = ({ patient }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", marginTop: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: 2,
+          }}
+        >
           <Button variant="contained" color="primary" onClick={addNewRow}>
             Add New
+          </Button>
+          <Button variant="contained" color="secondary" onClick={createInvoice}>
+            Create Invoice
           </Button>
         </Box>
       </Box>
