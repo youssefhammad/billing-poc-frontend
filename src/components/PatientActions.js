@@ -121,13 +121,13 @@ const PatientActions = ({ patient }) => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell sx={{ padding: "4px", width: "40%" }}>
+                <TableCell sx={{ padding: "4px", width: "30%" }}>
                   Medical Procedure
                 </TableCell>
                 <TableCell sx={{ padding: "4px", width: "20%" }}>
                   Price
                 </TableCell>
-                <TableCell sx={{ padding: "4px", width: "40%" }}>
+                <TableCell sx={{ padding: "4px", width: "50%" }}>
                   Procedure Date
                 </TableCell>
               </TableRow>
@@ -158,6 +158,7 @@ const PatientActions = ({ patient }) => {
                             display: "flex",
                             alignItems: "center",
                           },
+                          width: "230px", // Set fixed width for the dropdown
                         }}
                       >
                         <MenuItem value="">
@@ -184,12 +185,48 @@ const PatientActions = ({ patient }) => {
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DateTimePicker
                         renderInput={(props) => (
-                          <TextField {...props} sx={{ fontSize: "0.875rem" }} />
+                          <TextField
+                            {...props}
+                            InputLabelProps={{
+                              shrink: false, // Ensure the label shrinks
+                              sx: {
+                                fontSize: "0.875rem",
+                                top: "-6px", // Adjust the position of the label
+                              },
+                            }}
+                            InputProps={{
+                              sx: {
+                                fontSize: "0.875rem",
+                                padding: "4px",
+                                minHeight: "32px", // Adjust height to match the dropdown
+                                "& .MuiInputBase-input": {
+                                  padding: "4px", // Ensure padding does not increase height
+                                },
+                                display: "flex",
+                                alignItems: "center",
+                              },
+                            }}
+                          />
                         )}
-                        label="Procedure Date"
                         value={row.procedureDate}
                         onChange={handleChange(index, "procedureDate")}
                         inputFormat="yyyy/MM/dd hh:mm a"
+                        sx={{
+                          "& .MuiInputBase-root": {
+                            fontSize: "0.875rem",
+                            padding: "4px",
+                            minHeight: "32px",
+                            "& input": {
+                              padding: "4px",
+                            },
+                          },
+                          "& .MuiIconButton-root": {
+                            padding: "4px",
+                          },
+                          "& .MuiInputAdornment-root .MuiButtonBase-root": {
+                            padding: "4px",
+                          },
+                        }}
                       />
                     </LocalizationProvider>
                   </TableCell>
