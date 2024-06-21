@@ -31,6 +31,7 @@ const PatientActions = ({ patient }) => {
 
   useEffect(() => {
     if (patient) {
+      setInvoice(null); // Reset invoice when patient changes
       axios
         .get("https://localhost:7264/api/Patient/get-all-mediacl-procedures")
         .then((response) => {
@@ -41,11 +42,6 @@ const PatientActions = ({ patient }) => {
           setError(error);
           setLoading(false);
         });
-    }
-  }, [patient]);
-
-  useEffect(() => {
-    if (patient) {
       setRows([{ id: 1, action: "", price: "", procedureDate: null }]); // Reset rows when patient changes
     } else {
       setRows([]); // Clear rows if no patient is selected
@@ -87,12 +83,10 @@ const PatientActions = ({ patient }) => {
     axios
       .post("https://localhost:7264/api/Patient/add-invoice", invoiceData)
       .then((response) => {
-        // Handle successful response
         setInvoice(response.data);
         console.log("Invoice created successfully:", response.data);
       })
       .catch((error) => {
-        // Handle error response
         console.error("Failed to create invoice:", error);
       });
   };
@@ -161,7 +155,7 @@ const PatientActions = ({ patient }) => {
                             display: "flex",
                             alignItems: "center",
                           },
-                          width: "230px", // Set fixed width for the dropdown
+                          width: "230px",
                         }}
                       >
                         <MenuItem value="">
@@ -191,19 +185,19 @@ const PatientActions = ({ patient }) => {
                           <TextField
                             {...props}
                             InputLabelProps={{
-                              shrink: false, // Ensure the label shrinks
+                              shrink: false,
                               sx: {
                                 fontSize: "0.875rem",
-                                top: "-6px", // Adjust the position of the label
+                                top: "-6px",
                               },
                             }}
                             InputProps={{
                               sx: {
                                 fontSize: "0.875rem",
                                 padding: "4px",
-                                minHeight: "32px", // Adjust height to match the dropdown
+                                minHeight: "32px",
                                 "& .MuiInputBase-input": {
-                                  padding: "4px", // Ensure padding does not increase height
+                                  padding: "4px",
                                 },
                                 display: "flex",
                                 alignItems: "center",
@@ -252,13 +246,15 @@ const PatientActions = ({ patient }) => {
             variant="contained"
             color="secondary"
             onClick={createInvoice}
-            disabled={invoice !== null} // Disable the button if invoice is created
+            disabled={invoice !== null}
           >
             Create Invoice
           </Button>
         </Box>
       </Box>
-      {invoice && <InvoiceDetails invoice={invoice} />}
+      {invoice && (
+        <InvoiceDetails invoice={invoice} patientId={patient.patientId} />
+      )}
     </Paper>
   );
 };
