@@ -33,18 +33,51 @@ const PatientActions = ({ patient }) => {
     if (patient) {
       setInvoice(null); // Reset invoice when patient changes
       axios
-        .get("https://localhost:7264/api/Patient/get-all-mediacl-procedures")
+        .get(
+          `https://localhost:7264/api/Patient/get-all-mediacl-procedures-by-plan?planId=${patient.planId}`
+        )
         .then((response) => {
           setProcedures(response.data);
           setLoading(false);
+
+          // Check if patient has invoices
+          if (patient.invoices && patient.invoices.length > 0) {
+            const latestInvoice = patient.invoices[patient.invoices.length - 1];
+            setInvoice(latestInvoice);
+            setRows(
+              latestInvoice.patientMedicalProcedures.map((proc, index) => {
+                const matchingProcedure = response.data.find(
+                  (p) => p.medicalProcedureId === proc.medicalProcedureId
+                );
+                return {
+                  id: index + 1,
+                  action: proc.medicalProcedureId,
+                  price: matchingProcedure ? matchingProcedure.price : "N/A",
+                  configurationName: matchingProcedure
+                    ? matchingProcedure.configurationName
+                    : "N/A",
+                  procedureDate: new Date(proc.procedureDate),
+                };
+              })
+            );
+          } else {
+            setRows([
+              {
+                id: 1,
+                action: "",
+                price: "",
+                configurationName: "",
+                procedureDate: null,
+              },
+            ]);
+          }
         })
         .catch((error) => {
           setError(error);
           setLoading(false);
         });
-      setRows([{ id: 1, action: "", price: "", procedureDate: null }]); // Reset rows when patient changes
     } else {
-      setRows([]); // Clear rows if no patient is selected
+      setRows([]);
     }
   }, [patient]);
 
@@ -56,6 +89,7 @@ const PatientActions = ({ patient }) => {
       );
       newRows[index].action = selectedProcedure.medicalProcedureId;
       newRows[index].price = selectedProcedure.price;
+      newRows[index].configurationName = selectedProcedure.configurationName;
     } else if (field === "procedureDate") {
       newRows[index].procedureDate = event;
     }
@@ -65,7 +99,13 @@ const PatientActions = ({ patient }) => {
   const addNewRow = () => {
     setRows([
       ...rows,
-      { id: rows.length + 1, action: "", price: "", procedureDate: null },
+      {
+        id: rows.length + 1,
+        action: "",
+        price: "",
+        configurationName: "",
+        procedureDate: null,
+      },
     ]);
   };
 
@@ -118,13 +158,16 @@ const PatientActions = ({ patient }) => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell sx={{ padding: "4px", width: "30%" }}>
+                <TableCell sx={{ padding: "4px", width: "25%" }}>
                   Medical Procedure
                 </TableCell>
-                <TableCell sx={{ padding: "4px", width: "20%" }}>
+                <TableCell sx={{ padding: "4px", width: "25%" }}>
                   Price
                 </TableCell>
-                <TableCell sx={{ padding: "4px", width: "50%" }}>
+                <TableCell sx={{ padding: "4px", width: "25%" }}>
+                  Procedure Configuration
+                </TableCell>
+                <TableCell sx={{ padding: "4px", width: "25%" }}>
                   Procedure Date
                 </TableCell>
               </TableRow>
@@ -178,6 +221,9 @@ const PatientActions = ({ patient }) => {
                     </FormControl>
                   </TableCell>
                   <TableCell sx={{ padding: "4px" }}>{row.price}</TableCell>
+                  <TableCell sx={{ padding: "4px" }}>
+                    {row.configurationName}
+                  </TableCell>
                   <TableCell sx={{ padding: "4px" }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DateTimePicker
@@ -239,7 +285,12 @@ const PatientActions = ({ patient }) => {
             marginTop: 2,
           }}
         >
-          <Button variant="contained" color="primary" onClick={addNewRow}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={addNewRow}
+            disabled={invoice !== null}
+          >
             Add New
           </Button>
           <Button

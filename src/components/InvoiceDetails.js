@@ -21,7 +21,6 @@ const InvoiceDetails = ({ invoice, patientId }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Reset state when invoice or patientId changes
     setProcessedInvoice(null);
     setError(null);
   }, [invoice, patientId]);
@@ -110,6 +109,21 @@ const InvoiceDetails = ({ invoice, patientId }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        {renderTable(
+          invoice.patientMedicalProcedures,
+          [
+            { id: "patientMedicalProcedureId", label: "Procedure ID" },
+            { id: "medicalProcedureId", label: "Medical Procedure ID" },
+            {
+              id: "procedureDate",
+              label: "Procedure Date",
+              format: (value) => new Date(value).toLocaleString(),
+            },
+            { id: "outOfPocketCost", label: "Out of Pocket Cost" },
+            { id: "coveredAmount", label: "Covered Amount" },
+          ],
+          "Patient Medical Procedures"
+        )}
         <Box
           sx={{
             mt: 2,
