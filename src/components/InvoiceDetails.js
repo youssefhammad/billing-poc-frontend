@@ -41,6 +41,17 @@ const InvoiceDetails = ({ invoice, patientId }) => {
     }
   };
 
+  const getInvoiceStatusName = (statusId) => {
+    switch (statusId) {
+      case 1:
+        return "Processed";
+      case 2:
+        return "Unprocessed";
+      default:
+        return "Unknown";
+    }
+  };
+
   const renderTable = (data, columns, title) => (
     <Box sx={{ mt: 2 }}>
       <Typography variant="h6" gutterBottom>
@@ -88,7 +99,7 @@ const InvoiceDetails = ({ invoice, patientId }) => {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ padding: "4px" }}>Invoice ID</TableCell>
-                <TableCell sx={{ padding: "4px" }}>Invoice Status ID</TableCell>
+                <TableCell sx={{ padding: "4px" }}>Invoice Status</TableCell>
                 <TableCell sx={{ padding: "4px" }}>Charge</TableCell>
                 <TableCell sx={{ padding: "4px" }}>Discount</TableCell>
               </TableRow>
@@ -99,7 +110,7 @@ const InvoiceDetails = ({ invoice, patientId }) => {
                   {invoice.invoiceId}
                 </TableCell>
                 <TableCell sx={{ padding: "4px" }}>
-                  {invoice.invoiceStatusId}
+                  {getInvoiceStatusName(invoice.invoiceStatusId)}
                 </TableCell>
                 <TableCell sx={{ padding: "4px" }}>{invoice.charge}</TableCell>
                 <TableCell sx={{ padding: "4px" }}>
@@ -154,9 +165,9 @@ const InvoiceDetails = ({ invoice, patientId }) => {
                 [
                   { id: "invoiceId", label: "Invoice ID" },
                   {
-                    id: "dateTime",
-                    label: "Date Time",
-                    format: (value) => new Date(value).toLocaleString(),
+                    id: "invoiceStatusId",
+                    label: "Invoice Status",
+                    format: (value) => getInvoiceStatusName(value),
                   },
                   { id: "charge", label: "Charge" },
                   { id: "discount", label: "Discount" },
