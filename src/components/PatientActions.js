@@ -67,7 +67,7 @@ const PatientActions = ({ patient }) => {
                 action: "",
                 price: "",
                 configurationName: "",
-                procedureDate: null,
+                procedureDate: new Date(), // Set to current date and time
               },
             ]);
           }
@@ -104,7 +104,7 @@ const PatientActions = ({ patient }) => {
         action: "",
         price: "",
         configurationName: "",
-        procedureDate: null,
+        procedureDate: new Date(), // Set to current date and time
       },
     ]);
   };
