@@ -14,13 +14,14 @@ import {
   TableRow,
 } from "@mui/material";
 import axios from "axios";
-import PlanProceduresGrid from "./PlanProceduresGrid";
 
-const AddPlans = ({ insuranceCompanyId, insuranceCompanyName }) => {
+const AddPlans = ({
+  insuranceCompanyId,
+  insuranceCompanyName,
+  onPlansCreated,
+}) => {
   const [plans, setPlans] = useState([{ id: 1, name: "" }]);
   const [message, setMessage] = useState("");
-  const [showProceduresGrid, setShowProceduresGrid] = useState(false);
-  const [createdPlans, setCreatedPlans] = useState([]);
 
   const handleChange = (id, value) => {
     const updatedPlans = plans.map((plan) =>
@@ -50,8 +51,7 @@ const AddPlans = ({ insuranceCompanyId, insuranceCompanyName }) => {
         planNames
       );
       setMessage("Plans added successfully!");
-      setCreatedPlans(response.data);
-      setShowProceduresGrid(true);
+      onPlansCreated(response.data);
       setPlans([{ id: 1, name: "" }]);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.errors) {
@@ -64,84 +64,70 @@ const AddPlans = ({ insuranceCompanyId, insuranceCompanyName }) => {
   };
 
   return (
-    <Box sx={{ mt: 2, width: "28%" }}>
-      <Paper elevation={3} sx={{ p: 2, maxWidth: "1200px", margin: "0 auto" }}>
-        <Typography variant="h6" gutterBottom sx={{ mb: 1 }}>
-          Add Plans for {insuranceCompanyName}
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <TableContainer>
-            <Table
-              size="small"
-              aria-label="simple table"
-              sx={{ minWidth: "100%" }}
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{ padding: "4px 8px", height: "32px", width: "100%" }}
-                  >
-                    Plan Name
+    <Paper elevation={3} sx={{ p: 2 }}>
+      <Typography variant="h6" gutterBottom sx={{ mb: 1 }}>
+        Add Plans for {insuranceCompanyName}
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <TableContainer>
+          <Table size="small" aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ padding: "4px 8px", height: "32px" }}>
+                  Plan Name
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {plans.map((plan) => (
+                <TableRow key={plan.id}>
+                  <TableCell sx={{ padding: "4px 8px", height: "32px" }}>
+                    <TextField
+                      fullWidth
+                      value={plan.name}
+                      onChange={(e) => handleChange(plan.id, e.target.value)}
+                      margin="none"
+                      size="small"
+                      sx={{ "& .MuiInputBase-input": { padding: "4px 8px" } }}
+                    />
                   </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {plans.map((plan) => (
-                  <TableRow key={plan.id}>
-                    <TableCell sx={{ padding: "4px 8px", height: "32px" }}>
-                      <TextField
-                        fullWidth
-                        value={plan.name}
-                        onChange={(e) => handleChange(plan.id, e.target.value)}
-                        margin="none"
-                        size="small"
-                        sx={{ "& .MuiInputBase-input": { padding: "4px 8px" } }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Box sx={{ mt: 1, display: "flex", justifyContent: "space-between" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={addNewRow}
-              size="small"
-            >
-              Add New Row
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              color="secondary"
-              size="small"
-            >
-              Create Plans
-            </Button>
-          </Box>
-        </form>
-        {message && (
-          <Typography
-            color={
-              message.includes("Error") || message.includes("failed")
-                ? "error"
-                : "success"
-            }
-            sx={{ mt: 1, fontSize: "0.875rem" }}
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Box sx={{ mt: 1, display: "flex", justifyContent: "space-between" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={addNewRow}
+            size="small"
           >
-            {message}
-          </Typography>
-        )}
-        {showProceduresGrid && (
-          <PlanProceduresGrid
-            insuranceCompanyId={insuranceCompanyId}
-            createdPlans={createdPlans}
-          />
-        )}
-      </Paper>
-    </Box>
+            Add New Row
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            size="small"
+          >
+            Create Plans
+          </Button>
+        </Box>
+      </form>
+      {message && (
+        <Typography
+          color={
+            message.includes("Error") || message.includes("failed")
+              ? "error"
+              : "success"
+          }
+          sx={{ mt: 1, fontSize: "0.875rem" }}
+        >
+          {message}
+        </Typography>
+      )}
+    </Paper>
   );
 };
 

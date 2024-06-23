@@ -83,12 +83,16 @@ const PlanProceduresGrid = ({ insuranceCompanyId, createdPlans }) => {
   };
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box>
       <Typography variant="h6" gutterBottom>
         Plan Procedures Configuration
       </Typography>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="plan procedures table">
+        <Table
+          sx={{ minWidth: 650 }}
+          size="small"
+          aria-label="plan procedures table"
+        >
           <TableHead>
             <TableRow>
               <TableCell sx={{ padding: "4px", height: "32px" }}>
@@ -172,7 +176,12 @@ const PlanProceduresGrid = ({ insuranceCompanyId, createdPlans }) => {
         </Table>
       </TableContainer>
       <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-        <Button variant="contained" color="primary" onClick={handleSave}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSave}
+          size="small"
+        >
           Save Configurations
         </Button>
       </Box>
