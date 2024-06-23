@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/HomePage";
 import PatientPage from "./components/PatientPage";
 import AddInsuranceCompany from "./components/AddInsuranceCompany";
+import AddPatient from "./components/AddPatient";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/invoices" element={<PatientPage />} />
           <Route path="/add-insurance" element={<AddInsuranceCompany />} />
+          <Route path="/add-patient" element={<AddPatient />} />
         </Routes>
       </Box>
     </Router>

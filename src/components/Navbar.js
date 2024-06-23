@@ -19,6 +19,9 @@ const Navbar = () => {
         <Button color="inherit" component={Link} to="/add-insurance">
           Add Insurance
         </Button>
+        <Button color="inherit" component={Link} to="/add-patient">
+          Add Patient
+        </Button>
       </Toolbar>
     </AppBar>
   );
