@@ -1,19 +1,25 @@
 // src/App.js
-
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Box } from "@mui/material";
+import Navbar from "./components/Navbar";
+import Home from "./components/HomePage";
 import PatientPage from "./components/PatientPage";
-import HomePage from "./components/HomePage"; // Assuming you have a HomePage component or create one
+import AddInsuranceCompany from "./components/AddInsuranceCompany";
 
-const App = () => {
+function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/patients" element={<PatientPage />} />
-      </Routes>
+      <Box sx={{ flexGrow: 1 }}>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/invoices" element={<PatientPage />} />
+          <Route path="/add-insurance" element={<AddInsuranceCompany />} />
+        </Routes>
+      </Box>
     </Router>
   );
-};
+}
 
 export default App;

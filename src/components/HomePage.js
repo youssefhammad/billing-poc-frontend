@@ -1,14 +1,18 @@
-// src/HomePage.js
-
+// src/components/Home.js
 import React from "react";
+import { Typography, Box } from "@mui/material";
 
-const HomePage = () => {
+const Home = () => {
   return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
-      <p>This is the home page of your application.</p>
-    </div>
+    <Box sx={{ padding: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Welcome to the Medical Billing System
+      </Typography>
+      <Typography variant="body1">
+        Use the navigation bar to access different parts of the application.
+      </Typography>
+    </Box>
   );
 };
 
-export default HomePage;
+export default Home;
