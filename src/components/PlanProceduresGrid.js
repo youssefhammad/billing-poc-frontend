@@ -91,10 +91,18 @@ const PlanProceduresGrid = ({ insuranceCompanyId, createdPlans }) => {
         <Table sx={{ minWidth: 650 }} aria-label="plan procedures table">
           <TableHead>
             <TableRow>
-              <TableCell>Plan Name</TableCell>
-              <TableCell>Medical Procedure</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Procedure Configuration</TableCell>
+              <TableCell sx={{ padding: "4px", height: "32px" }}>
+                Plan Name
+              </TableCell>
+              <TableCell sx={{ padding: "4px", height: "32px" }}>
+                Medical Procedure
+              </TableCell>
+              <TableCell sx={{ padding: "4px", height: "32px" }}>
+                Price
+              </TableCell>
+              <TableCell sx={{ padding: "4px", height: "32px" }}>
+                Procedure Configuration
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -102,12 +110,17 @@ const PlanProceduresGrid = ({ insuranceCompanyId, createdPlans }) => {
               medicalProcedures.map((procedure) => (
                 <TableRow
                   key={`${plan.planId}-${procedure.medicalProcedureId}`}
+                  sx={{ height: "32px" }}
                 >
-                  <TableCell>{plan.planName}</TableCell>
-                  <TableCell>{procedure.procedureName}</TableCell>
-                  <TableCell>{procedure.price}</TableCell>
-                  <TableCell>
-                    <FormControl fullWidth>
+                  <TableCell sx={{ padding: "4px" }}>{plan.planName}</TableCell>
+                  <TableCell sx={{ padding: "4px" }}>
+                    {procedure.procedureName}
+                  </TableCell>
+                  <TableCell sx={{ padding: "4px" }}>
+                    {procedure.price}
+                  </TableCell>
+                  <TableCell sx={{ padding: "4px" }}>
+                    <FormControl fullWidth sx={{ m: 0 }}>
                       <Select
                         value={
                           selectedConfigurations[
@@ -121,6 +134,17 @@ const PlanProceduresGrid = ({ insuranceCompanyId, createdPlans }) => {
                             e.target.value
                           )
                         }
+                        sx={{
+                          fontSize: "0.875rem",
+                          padding: "0px",
+                          minHeight: "32px",
+                          "& .MuiSelect-select": {
+                            padding: "4px",
+                            display: "flex",
+                            alignItems: "center",
+                          },
+                          width: "230px",
+                        }}
                       >
                         <MenuItem value="">
                           <em>None</em>
@@ -129,6 +153,11 @@ const PlanProceduresGrid = ({ insuranceCompanyId, createdPlans }) => {
                           <MenuItem
                             key={config.procedureConfigurationId}
                             value={config.procedureConfigurationId}
+                            sx={{
+                              fontSize: "0.875rem",
+                              minHeight: "32px",
+                              padding: "4px",
+                            }}
                           >
                             {config.configurationName}
                           </MenuItem>

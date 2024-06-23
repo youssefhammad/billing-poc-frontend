@@ -50,7 +50,7 @@ const AddPlans = ({ insuranceCompanyId, insuranceCompanyName }) => {
         planNames
       );
       setMessage("Plans added successfully!");
-      setCreatedPlans(response.data); // Assume the API returns an array of created plans with their IDs
+      setCreatedPlans(response.data);
       setShowProceduresGrid(true);
       setPlans([{ id: 1, name: "" }]);
     } catch (error) {
@@ -64,28 +64,38 @@ const AddPlans = ({ insuranceCompanyId, insuranceCompanyName }) => {
   };
 
   return (
-    <Box sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h5" gutterBottom>
+    <Box sx={{ mt: 2, width: "28%" }}>
+      <Paper elevation={3} sx={{ p: 2, maxWidth: "1200px", margin: "0 auto" }}>
+        <Typography variant="h6" gutterBottom sx={{ mb: 1 }}>
           Add Plans for {insuranceCompanyName}
         </Typography>
         <form onSubmit={handleSubmit}>
           <TableContainer>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table
+              size="small"
+              aria-label="simple table"
+              sx={{ minWidth: "100%" }}
+            >
               <TableHead>
                 <TableRow>
-                  <TableCell>Plan Name</TableCell>
+                  <TableCell
+                    sx={{ padding: "4px 8px", height: "32px", width: "100%" }}
+                  >
+                    Plan Name
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {plans.map((plan) => (
                   <TableRow key={plan.id}>
-                    <TableCell>
+                    <TableCell sx={{ padding: "4px 8px", height: "32px" }}>
                       <TextField
                         fullWidth
                         value={plan.name}
                         onChange={(e) => handleChange(plan.id, e.target.value)}
-                        margin="normal"
+                        margin="none"
+                        size="small"
+                        sx={{ "& .MuiInputBase-input": { padding: "4px 8px" } }}
                       />
                     </TableCell>
                   </TableRow>
@@ -93,11 +103,21 @@ const AddPlans = ({ insuranceCompanyId, insuranceCompanyName }) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
-            <Button variant="contained" color="primary" onClick={addNewRow}>
+          <Box sx={{ mt: 1, display: "flex", justifyContent: "space-between" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={addNewRow}
+              size="small"
+            >
               Add New Row
             </Button>
-            <Button type="submit" variant="contained" color="secondary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              size="small"
+            >
               Create Plans
             </Button>
           </Box>
@@ -109,7 +129,7 @@ const AddPlans = ({ insuranceCompanyId, insuranceCompanyName }) => {
                 ? "error"
                 : "success"
             }
-            sx={{ mt: 2 }}
+            sx={{ mt: 1, fontSize: "0.875rem" }}
           >
             {message}
           </Typography>

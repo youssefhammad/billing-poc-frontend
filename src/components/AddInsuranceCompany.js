@@ -18,7 +18,7 @@ const AddInsuranceCompany = () => {
         `https://localhost:7264/api/Patient/add-insurance-company?insuranceCompanyName=${companyName}`
       );
       setMessage("Insurance company added successfully!");
-      setNewCompany(response.data); // Assuming the API returns the new company data
+      setNewCompany(response.data);
       setCompanyName("");
     } catch (error) {
       setMessage("Error adding insurance company. Please try again.");
@@ -32,11 +32,11 @@ const AddInsuranceCompany = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        mt: 4,
+        mt: 2,
       }}
     >
-      <Paper elevation={3} sx={{ p: 4, maxWidth: 400, width: "100%" }}>
-        <Typography variant="h5" gutterBottom>
+      <Paper elevation={3} sx={{ p: 2, maxWidth: 400, width: "100%" }}>
+        <Typography variant="h6" gutterBottom sx={{ mb: 1 }}>
           Add Insurance Company
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -45,15 +45,18 @@ const AddInsuranceCompany = () => {
             label="Company Name"
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
-            margin="normal"
+            margin="dense"
             required
+            size="small"
+            sx={{ mb: 1 }}
           />
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2 }}
+            size="small"
+            sx={{ mt: 1 }}
           >
             Create Company
           </Button>
@@ -61,7 +64,7 @@ const AddInsuranceCompany = () => {
         {message && (
           <Typography
             color={message.includes("Error") ? "error" : "success"}
-            sx={{ mt: 2 }}
+            sx={{ mt: 1, fontSize: "0.875rem" }}
           >
             {message}
           </Typography>
